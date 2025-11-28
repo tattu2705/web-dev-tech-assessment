@@ -1,20 +1,8 @@
 import { Space, Input } from 'antd'
 import React from 'react'
+import { SearchBarProps } from '../../types/search-bar'
 
 const { Search } = Input
-
-interface SearchBarProps {
-  onSearch?: (value: string) => void
-  placeholder?: string
-  allowClear?: boolean
-  enterButton?: React.ReactNode
-  size?: 'large' | 'middle' | 'small'
-  style?: React.CSSProperties
-  value: string
-  onChange?: (value: string) => void
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
-  onClear?: () => void
-}
 
 const SearchBar: React.FC<SearchBarProps> = ({ placeholder, allowClear, enterButton, size, onSearch, style, value, onChange, onKeyDown, onClear }) => {
 
@@ -31,6 +19,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, allowClear, enterBut
         onKeyDown={onKeyDown}
         onClear={onClear}
         style={style}
+        data-testid="search-input"
       />
     </Space>
   )

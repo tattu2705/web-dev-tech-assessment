@@ -1,29 +1,5 @@
 import React from "react";
-
-interface Highlight {
-  BeginOffset: number;
-  EndOffset: number;
-}
-
-interface ResultItem {
-  DocumentId: string;
-  DocumentTitle: {
-    Text: string;
-    Highlights: Highlight[];
-  };
-  DocumentExcerpt: {
-    Text: string;
-    Highlights: Highlight[];
-  };
-  DocumentURI: string;
-}
-
-interface SearchResultProps {
-  total: number;
-  page: number;
-  pageSize: number;
-  results: ResultItem[];
-}
+import { Highlight, SearchResultProps } from "../../types/search-result";
 
 function renderWithHighlights(text: string, highlights: Highlight[]) {
   if (!highlights || highlights.length === 0) return text;
@@ -85,7 +61,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
       <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
         {results.map((item) => (
           <div key={item.DocumentId}>
-            
+
             {/* Title - CLICKABLE */}
             <a
               href={item.DocumentURI}
