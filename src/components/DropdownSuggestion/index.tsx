@@ -1,13 +1,8 @@
 import React, { useRef } from "react";
 
-interface SuggestionItem {
-  text: string;
-  importance: number;
-}
-
 interface DropdownSuggestionProps {
   keyword: string;
-  suggestions: SuggestionItem[];
+  suggestions: string[];
   visible: boolean;
   highlightIndex: number;
   onSelect: (value: string) => void;
@@ -28,20 +23,16 @@ const DropdownSuggestion: React.FC<DropdownSuggestionProps> = ({
 
   if (!visible || keyword.length < 3) return null;
 
-  const filtered = suggestions
-    .filter((s) =>
-      s.text.toLowerCase().includes(keyword.toLowerCase())
-    )
-    .sort((a, b) => b.importance - a.importance)
-    .slice(0, maxItems);
+  const filtered = suggestions.slice(0, maxItems);
 
   return (
     <div
       ref={containerRef}
       style={{
         position: "absolute",
-        top: "48px",
-        width: "400px",
+        top: "56px",
+        left: 0,
+        width: "calc(78vw - 145px)",
         background: "#fff",
         border: "1px solid #e5e5e5",
         borderRadius: "6px",
@@ -50,11 +41,11 @@ const DropdownSuggestion: React.FC<DropdownSuggestionProps> = ({
         padding: "6px 0",
       }}
     >
-      {filtered.map((item, index) => (
+      {filtered.map((text, index) => (
         <div
           key={index}
           onMouseEnter={() => onHover(index)}
-          onClick={() => onSelect(item.text)}
+          onClick={() => onSelect(text)}
           style={{
             padding: "10px 14px",
             cursor: "pointer",
@@ -64,21 +55,10 @@ const DropdownSuggestion: React.FC<DropdownSuggestionProps> = ({
             color: "#333",
           }}
         >
-          {item.text}
+          {text}
         </div>
       ))}
 
-      {filtered.length === 0 && (
-        <div
-          style={{
-            padding: "10px 14px",
-            color: "#999",
-            fontSize: "14px",
-          }}
-        >
-          No suggestions found
-        </div>
-      )}
     </div>
   );
 };

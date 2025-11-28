@@ -42,6 +42,7 @@ function renderWithHighlights(text: string, highlights: Highlight[]) {
         style={{
           padding: "0 2px",
           borderRadius: "2px",
+          fontWeight: "bold"
         }}
       >
         {text.slice(h.BeginOffset, h.EndOffset)}
@@ -69,7 +70,6 @@ const SearchResult: React.FC<SearchResultProps> = ({
 
   return (
     <div style={{ width: "100%", padding: "20px 40px" }}>
-      {/* Count */}
       <div
         style={{
           fontSize: "22px",
@@ -107,10 +107,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
                 (e.currentTarget.style.textDecoration = "none")
               }
             >
-              {renderWithHighlights(
-                item.DocumentTitle.Text,
-                item.DocumentTitle.Highlights
-              )}
+              {item.DocumentTitle.Text}
             </a>
 
             {/* Excerpt */}

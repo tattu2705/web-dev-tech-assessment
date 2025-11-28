@@ -11,11 +11,13 @@ interface SearchBarProps {
   size?: 'large' | 'middle' | 'small'
   style?: React.CSSProperties
   value: string
-  onChange?: (value: string) 
+  onChange?: (value: string) => void
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+  onClear?: () => void
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ placeholder, allowClear, enterButton, size, onSearch, style, value, onChange }) => {
-  
+const SearchBar: React.FC<SearchBarProps> = ({ placeholder, allowClear, enterButton, size, onSearch, style, value, onChange, onKeyDown, onClear }) => {
+
   return (
     <Space>
       <Search
@@ -24,8 +26,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, allowClear, enterBut
         allowClear={allowClear}
         enterButton={enterButton}
         size={size}
-        onChange={onChange}
+        onChange={(e) => onChange?.(e.target.value)}
         onSearch={onSearch}
+        onKeyDown={onKeyDown}
+        onClear={onClear}
         style={style}
       />
     </Space>

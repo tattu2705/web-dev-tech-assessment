@@ -1,9 +1,5 @@
 import axios from 'axios';
-
-export interface SuggestionsResponse {
-  suggestions: Record<string, number>;
-  synonyms: Record<string, string[]>;
-}
+import { SuggestionsResponse } from '../types/promise-type';
 
 // URL API
 const SUGGESTION_API_URL =
