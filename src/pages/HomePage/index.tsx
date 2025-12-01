@@ -10,7 +10,6 @@ import { useSearchResults } from "../../hooks/useSearchResults";
 const HomePage = () => {
   const [keyword, setKeyword] = useState("");
   const suggestionList = useSuggestions();
-
   const [filtered, setFiltered] = useState<string[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [highlightIndex, setHighlightIndex] = useState(-1);
