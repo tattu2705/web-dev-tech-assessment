@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { fetchSearchResults } from "../services/search-service";
 import { ApiResponse } from "../types/promise-type";
+import { notifyError } from "../utils/notify";
 
 export const useSearchResults = () => {
   const [data, setData] = useState<ApiResponse | null>(null);
@@ -14,7 +15,7 @@ export const useSearchResults = () => {
       const results = await fetchSearchResults(keyword);
       setData(results);
     } catch (error) {
-      console.error("Fetch error:", error);
+      notifyError("Error", "Failed to fetch search results");
     } finally {
       setLoading(false);
     }

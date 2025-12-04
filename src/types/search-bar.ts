@@ -1,4 +1,5 @@
 export interface SearchBarProps {
+  className?: string
   onSearch?: (value: string) => void
   placeholder?: string
   allowClear?: boolean

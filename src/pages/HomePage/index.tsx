@@ -6,6 +6,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import DropdownSuggestion from "../../components/DropdownSuggestion";
 import { useSuggestions } from "../../hooks/useSuggestions";
 import { useSearchResults } from "../../hooks/useSearchResults";
+import "./index.css";
 
 const HomePage = () => {
   const [keyword, setKeyword] = useState("");
@@ -16,7 +17,7 @@ const HomePage = () => {
   const { data, loading, search } = useSearchResults();
 
   const enterButton = (
-    <Button type="primary" style={{ width: "160px", backgroundColor: "#1C76D5", borderColor: "#1C76D5" }}>
+    <Button type="primary">
       <SearchOutlined /> Search
     </Button>
   );
@@ -75,22 +76,15 @@ const HomePage = () => {
   };
 
   return (
-    <div style={{ width: "100%" }}>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div
-          style={{
-            marginBottom: "30px",
-            display: "flex",
-            justifyContent: "center",
-            position: "relative",
-          }}
-        >
+    <div className="homepage-container">
+      <div className="homepage-search-wrapper">
+        <div className="homepage-search-inner">
           <SearchBar
-            allowClear={true}
+            allowClear
             onSearch={handleSearch}
             enterButton={enterButton}
             size="large"
-            style={{ width: "78vw" }}
+            className="searchbar-wide"
             value={keyword}
             onChange={(s) => setKeyword(s)}
             onKeyDown={handleKeyDown}
@@ -109,7 +103,7 @@ const HomePage = () => {
       </div>
 
       {loading && (
-        <div style={{ display: "flex", fontSize: 16, justifyContent: "center" }}>
+        <div className="homepage-loading">
           <Spin />
         </div>
       )}
