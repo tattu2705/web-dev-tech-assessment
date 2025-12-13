@@ -3,7 +3,9 @@ import { fetchSuggestions } from "../services/suggestion-service";
 import { notifyError } from "../utils/notify";
 export const useSuggestions = () => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
-
+  const clearSuggestions = () => {
+    setSuggestions([])
+  }
   useEffect(() => {
     const load = async () => {
       try {
@@ -16,5 +18,5 @@ export const useSuggestions = () => {
     load();
   }, []);
 
-  return suggestions;
+  return {suggestions, clearSuggestions};
 };

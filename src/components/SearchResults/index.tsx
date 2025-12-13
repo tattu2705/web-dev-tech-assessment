@@ -45,7 +45,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
   const end = Math.min(page * pageSize, total);
 
   return (
-    <div style={{ width: "100%", padding: "20px 40px" }}>
+    <div style={{ width: "100%"}}>
       <div
         style={{
           fontSize: "22px",
@@ -57,12 +57,10 @@ const SearchResult: React.FC<SearchResultProps> = ({
         Showing {start}-{end} of {total} results
       </div>
 
-      {/* Items */}
       <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
         {results.map((item) => (
           <div key={item.DocumentId}>
 
-            {/* Title - CLICKABLE */}
             <a
               href={item.DocumentURI}
               target="_blank"
@@ -86,7 +84,6 @@ const SearchResult: React.FC<SearchResultProps> = ({
               {item.DocumentTitle.Text}
             </a>
 
-            {/* Excerpt */}
             <div
               style={{
                 fontSize: "16px",
@@ -102,7 +99,6 @@ const SearchResult: React.FC<SearchResultProps> = ({
               )}
             </div>
 
-            {/* URL */}
             <div style={{ fontSize: "14px", color: "#686868" }}>
               {item.DocumentURI}
             </div>

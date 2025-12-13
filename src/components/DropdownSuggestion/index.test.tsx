@@ -19,6 +19,7 @@ describe("DropdownSuggestion", () => {
       highlightIndex: -1,
       onSelect: jest.fn(),
       onHover: jest.fn(),
+      onCloseSuggestion: jest.fn(),
       ...props,
     };
     return render(<DropdownSuggestion {...defaultProps} />);

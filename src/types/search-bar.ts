@@ -1,6 +1,6 @@
 export interface SearchBarProps {
   className?: string
-  onSearch?: (value: string) => void
+  onSearch: (value: string) => void
   placeholder?: string
   allowClear?: boolean
   enterButton?: React.ReactNode

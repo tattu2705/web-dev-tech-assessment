@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import { extractHighlightByKeyword, ITextFormat } from "../../utils/highlight/highlight-text";
 
 interface DropdownSuggestionProps {
   keyword: string;
@@ -7,7 +8,26 @@ interface DropdownSuggestionProps {
   highlightIndex: number;
   onSelect: (value: string) => void;
   onHover: (index: number) => void;
+  onCloseSuggestion: () => void;
   maxItems?: number;
+}
+
+interface IProps {
+  textFormats: ITextFormat[];
+}
+
+function HighlightText(props: IProps) {
+  const { textFormats } = props;
+
+  return (
+    <>
+      {textFormats.map(({ text, type }, index) => (
+        <span key={index} className={type === "bold" ? "font-bold" : ""}>
+          {text}
+        </span>
+      ))}
+    </>
+  );
 }
 
 const DropdownSuggestion: React.FC<DropdownSuggestionProps> = ({
@@ -17,48 +37,29 @@ const DropdownSuggestion: React.FC<DropdownSuggestionProps> = ({
   highlightIndex,
   onSelect,
   onHover,
+  onCloseSuggestion,
   maxItems = 6,
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  if (!visible || keyword.length < 3) return null;
-
-  const filtered = suggestions.slice(0, maxItems);
-
+  
   return (
-    <div
-      ref={containerRef}
-      style={{
-        position: "absolute",
-        top: "56px",
-        left: 0,
-        width: "calc(78vw - 145px)",
-        background: "#fff",
-        border: "1px solid #e5e5e5",
-        borderRadius: "6px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-        zIndex: 30,
-        padding: "6px 0",
-      }}
-    >
-      {filtered.map((text, index) => (
-        <div
-          key={index}
-          onMouseEnter={() => onHover(index)}
-          onClick={() => onSelect(text)}
-          style={{
-            padding: "10px 14px",
-            cursor: "pointer",
-            background:
-              index === highlightIndex ? "#f0f7ff" : "#fff",
-            fontSize: "15px",
-            color: "#333",
-          }}
-        >
-          {text}
-        </div>
-      ))}
-
+    <div className="suggestion-wrapper">
+      <ul aria-label="suggestion-dropdown">
+        {
+          suggestions.map((suggestion, index) => {
+            const highlightText = extractHighlightByKeyword(suggestion, keyword);
+            return (
+              <li
+                key={index}
+                className={`dropdown-item ${highlightIndex === index ? "selected-item" : ""}`}
+                onMouseEnter={() => onHover(index)}
+                onClick={() => onSelect(suggestion)}
+              >
+                <HighlightText textFormats={highlightText} />
+              </li>
+            )
+          })
+        }
+      </ul>
     </div>
   );
 };

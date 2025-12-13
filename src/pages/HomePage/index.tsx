@@ -1,26 +1,37 @@
 import React, { useEffect, useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import SearchResult from "../../components/SearchResults";
-import { Button, Spin } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 import DropdownSuggestion from "../../components/DropdownSuggestion";
 import { useSuggestions } from "../../hooks/useSuggestions";
 import { useSearchResults } from "../../hooks/useSearchResults";
 import "./index.css";
+import SearchIcon from "../../assets/icons/SearchIcon";
+import Banner from "../../components/Banner";
 
 const HomePage = () => {
   const [keyword, setKeyword] = useState("");
-  const suggestionList = useSuggestions();
+  const {suggestions} = useSuggestions();
   const [filtered, setFiltered] = useState<string[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [highlightIndex, setHighlightIndex] = useState(-1);
   const { data, loading, search } = useSearchResults();
 
   const enterButton = (
-    <Button type="primary">
-      <SearchOutlined /> Search
-    </Button>
+    <button
+      // className="bg-primary-blue flex justify-center items-center gap-2 text-white py-2 px-5 rounded-md"
+      className="search-btn"
+      aria-label="search-btn"
+    >
+      <SearchIcon />
+      <span className="hidden sm:block">Search</span>
+    </button>
   );
+
+  const onClose = () => {
+    setShowDropdown(false);
+    setHighlightIndex(-1);
+  }
 
   useEffect(() => {
     if (keyword.length < 3) {
@@ -29,11 +40,11 @@ const HomePage = () => {
     }
 
     const lower = keyword.toLowerCase();
-    const top6 = suggestionList.filter((s) => s.toLowerCase().includes(lower)).slice(0, 6);
+    const top6 = suggestions.filter((s) => s.toLowerCase().includes(lower)).slice(0, 6);
 
     setFiltered(top6);
     setShowDropdown(top6.length > 0);
-  }, [keyword, suggestionList]);
+  }, [keyword, suggestions]);
 
   const handleSearch = async (value: string) => {
     await search(value);
@@ -76,8 +87,9 @@ const HomePage = () => {
   };
 
   return (
-    <div className="homepage-container">
-      <div className="homepage-search-wrapper">
+    <div>
+      <div className="header-shadow">
+        <Banner />
         <div className="homepage-search-inner">
           <SearchBar
             allowClear
@@ -94,6 +106,7 @@ const HomePage = () => {
           <DropdownSuggestion
             visible={showDropdown}
             keyword={keyword}
+            onCloseSuggestion={onClose}
             suggestions={filtered}
             highlightIndex={highlightIndex}
             onSelect={handleSelectSuggestion}

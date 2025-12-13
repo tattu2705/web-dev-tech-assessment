@@ -1,0 +1,18 @@
+.banner {
+  background-color: #f0f0f0;
+}
+
+.banner-wrapper {
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  padding: 0.5rem 0;
+  color: #5b5b5b;
+}
+
+.bold-text {
+  font-weight: 600;
+}
