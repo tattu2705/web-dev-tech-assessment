@@ -6,20 +6,22 @@ import { notifyError } from "../utils/notify";
 export const useSearchResults = () => {
   const [data, setData] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [searchPhrase, setSearchPhrase] = useState<string>("")
 
-  const search = async (keyword: string) => {
-    if (!keyword.trim()) return;
-
+  const fetchResults = async (keyword: string) => {
     setLoading(true);
     try {
       const results = await fetchSearchResults(keyword);
       setData(results);
-    } catch (error) {
-      notifyError("Error", "Failed to fetch search results");
-    } finally {
-      setLoading(false);
+      setSearchPhrase(keyword)
     }
-  };
+    catch (error) {
+      notifyError("Error", "Failed to fetch search results");
+    }
+    finally {
+      setLoading(false)
+    }
+  }
 
   const clear = () => {
     setData(null);
@@ -28,7 +30,8 @@ export const useSearchResults = () => {
   return {
     data,
     loading,
-    search,
+    fetchResults,
     clear,
+    searchPhrase
   };
 };

@@ -1,6 +1,11 @@
 export interface SuggestionsResponse {
-  suggestions: string[];
-  stemmedQueryTerm: string;
+  suggestions: Record<string, number>;
+  synonyms: Record<string, string[]>;
+}
+
+export interface SuggestionItem {
+  text: string;
+  score: number;
 }
 
 export interface ApiResponse {

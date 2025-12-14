@@ -21,4 +21,5 @@ export interface SearchResultProps {
   page: number;
   pageSize: number;
   results: ResultItem[];
+  searchKeyword: string;
 }
