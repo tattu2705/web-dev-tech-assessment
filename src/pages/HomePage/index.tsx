@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import SearchResult from "../../components/SearchResults";
 import { Spin } from "antd";
 import { useSearchResults } from "../../hooks/useSearchResults";
-import "./index.css";
 import Banner from "../../components/Banner";
+import "./index.css";
 
 const HomePage = () => {
   const { data, loading, fetchResults, searchPhrase, clear } = useSearchResults();

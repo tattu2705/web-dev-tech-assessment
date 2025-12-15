@@ -1,40 +1,7 @@
 import React from "react";
-import { Highlight, SearchResultProps } from "../../types/search-result";
+import { SearchResultProps } from "../../types/search-result";
+import { renderWithHighlights } from "../../utils/highlight/highlight-text";
 import './index.css'
-
-function renderWithHighlights(text: string, highlights: Highlight[]) {
-  if (!highlights || highlights.length === 0) return text;
-
-  const parts: React.ReactNode[] = [];
-  let lastIndex = 0;
-
-  highlights.forEach((h, i) => {
-    if (lastIndex < h.BeginOffset) {
-      parts.push(text.slice(lastIndex, h.BeginOffset));
-    }
-
-    parts.push(
-      <span
-        key={i}
-        style={{
-          padding: "0 2px",
-          borderRadius: "2px",
-          fontWeight: "bold"
-        }}
-      >
-        {text.slice(h.BeginOffset, h.EndOffset)}
-      </span>
-    );
-
-    lastIndex = h.EndOffset;
-  });
-
-  if (lastIndex < text.length) {
-    parts.push(text.slice(lastIndex));
-  }
-
-  return parts;
-}
 
 const SearchResult: React.FC<SearchResultProps> = ({
   total,
@@ -64,15 +31,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
                     href={item.DocumentURI}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{
-                      fontSize: "22px",
-                      fontWeight: 600,
-                      color: "#0d6efd",
-                      marginBottom: "6px",
-                      display: "inline-block",
-                      textDecoration: "none",
-                      cursor: "pointer",
-                    }}
+                    className="item-title"
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.textDecoration = "underline")
                     }
@@ -94,7 +53,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
                   >
                     {renderWithHighlights(
                       item.DocumentExcerpt.Text,
-                      item.DocumentExcerpt.Highlights
+                      searchKeyword
                     )}
                   </div>
 

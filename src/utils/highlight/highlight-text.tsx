@@ -80,3 +80,39 @@ export const extractHighlightByKeyword = (
 
   return result;
 };
+
+export const renderWithHighlights = (
+  text: string,
+  keyword: string
+): React.ReactNode => {
+  if (!keyword.trim()) return text;
+
+  const words = keyword
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((w) => w.length > 1);
+
+  if (words.length === 0) return text;
+
+  const escapedWords = words.map((w) =>
+    w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  );
+
+  const regex = new RegExp(`(${escapedWords.join("|")})`, "gi");
+
+  const parts = text.split(regex);
+
+  return (
+    <>
+      {parts.map((part, index) =>
+        words.some((w) => part.toLowerCase() === w) ? (
+          <span key={index} style={{fontWeight: 700}}>
+            {part}
+          </span>
+        ) : (
+          <span key={index}>{part}</span>
+        )
+      )}
+    </>
+  );
+};
