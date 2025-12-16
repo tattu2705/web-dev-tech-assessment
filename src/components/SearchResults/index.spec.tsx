@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import SearchResult from './index';
 
@@ -66,7 +65,7 @@ describe('SearchResult', () => {
 
     // Showing info
     expect(
-      screen.getByText('Showing 1-1 of 1 results')
+      screen.getByText('Showing 1-1 of 1 result')
     ).toBeInTheDocument();
 
     // Title link

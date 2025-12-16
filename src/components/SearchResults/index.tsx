@@ -1,6 +1,6 @@
 import React from "react";
-import { SearchResultProps } from "../../types/search-result";
-import { renderWithHighlights } from "../../utils/highlight/highlight-text";
+import { SearchResultProps } from "@/types/search-result";
+import { renderWithHighlights } from "@/utils/highlight/highlight-text";
 import './index.css'
 
 const SearchResult: React.FC<SearchResultProps> = ({
@@ -21,7 +21,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
             <div
               className="search-result-details"
             >
-              Showing {start}-{end} of {total} results
+              Showing {start}-{end} of {total} {results.length === 1 ? "result": "results"}
             </div>
 
             <div className="search-result-wrapper">

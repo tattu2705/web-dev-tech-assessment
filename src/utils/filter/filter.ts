@@ -1,4 +1,4 @@
-import { ApiResponse } from "../../types/promise-type";
+import { ApiResponse } from "@/types/promise-type";
 
 export const filterSearchSuggestions = (
   suggestions: Record<string, number>,
@@ -14,8 +14,8 @@ export const filterSearchSuggestions = (
     .map(([text]) => text);
 };
 
-export const getOtherResultsFromSymnonyms = (
-  symnonyms: Record<string, string[]>,
+export const getOtherResultsFromSynonyms = (
+  synonyms: Record<string, string[]>,
   keyword: string,
   limit = 6
 ): string[] => {
@@ -23,11 +23,11 @@ export const getOtherResultsFromSymnonyms = (
   const results = new Set<string>();
 
   words.forEach((word) => {
-    if (symnonyms[word]) {
-      symnonyms[word].forEach((syn) => results.add(syn));
+    if (synonyms[word]) {
+      synonyms[word].forEach((syn) => results.add(syn));
     }
 
-    Object.entries(symnonyms).forEach(([key, values]) => {
+    Object.entries(synonyms).forEach(([key, values]) => {
       if (values.includes(word)) {
         results.add(key);
         values.forEach((v) => results.add(v));

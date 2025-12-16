@@ -64,26 +64,4 @@ describe('useSearchResults', () => {
     expect(result.current.loading).toBe(false);
   });
 
-  it('should clear data', async () => {
-    const mockResponse = {
-      TotalNumberOfResults: 1,
-      Page: 1,
-      PageSize: 10,
-      ResultItems: [],
-    };
-
-    mockedFetchSearchResults.mockResolvedValueOnce(mockResponse);
-
-    const { result } = renderHook(() => useSearchResults());
-
-    await act(async () => {
-      await result.current.fetchResults('child');
-    });
-
-    act(() => {
-      result.current.clear();
-    });
-
-    expect(result.current.data).toBeNull();
-  });
 });

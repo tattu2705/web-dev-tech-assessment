@@ -1,4 +1,4 @@
-import LogoIcon from '../../assets/icons/LogoIcon'
+import LogoIcon from '@/assets/icons/LogoIcon'
 import './index.css'
 
 const Banner = () => {

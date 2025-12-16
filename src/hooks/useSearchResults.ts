@@ -23,15 +23,10 @@ export const useSearchResults = () => {
     }
   }
 
-  const clear = () => {
-    setData(null);
-  };
-
   return {
     data,
     loading,
     fetchResults,
-    clear,
     searchPhrase
   };
 };

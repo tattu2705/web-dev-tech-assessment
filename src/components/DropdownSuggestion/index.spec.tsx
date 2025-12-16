@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import DropdownSuggestion from './index';
 
@@ -13,7 +12,7 @@ describe('DropdownSuggestion', () => {
   const baseProps = {
     keyword: 'child',
     suggestions: ['child care', 'child support'],
-    symnonyms: ['infant', 'baby'],
+    synonyms: ['infant', 'baby'],
     highlightIndex: -1,
     onSelect: jest.fn(),
     onHover: jest.fn(),

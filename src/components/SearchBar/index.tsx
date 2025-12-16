@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { SearchBarProps } from '../../types/search-bar'
+import { SearchBarProps } from '@/types/search-bar'
 import DOMPurify from 'dompurify'
-import CrossIcon from '../../assets/icons/CrossIcon'
-import { useSuggestions } from '../../hooks/useSuggestions'
-import SearchIcon from '../../assets/icons/SearchIcon'
+import CrossIcon from '@/assets/icons/CrossIcon'
+import { useSuggestions } from '@/hooks/useSuggestions'
+import SearchIcon from '@/assets/icons/SearchIcon'
 import './index.css'
-import DropdownSuggestion from '../DropdownSuggestion'
+import DropdownSuggestion from '@/components/DropdownSuggestion'
 const MAX_INPUT_LEN = 100
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClear }) => {
-  const { suggestions, clearSuggestions, symnonyms, fetchDebouncedSuggestions } = useSuggestions()
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+  const { suggestions, clearSuggestions, synonyms, fetchDebouncedSuggestions } = useSuggestions()
   const [inputValue, setInputValue] = useState("")
   const [error, setError] = useState<string | null>("")
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
@@ -24,20 +24,22 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClear }) => {
   }, [isDropdownOpen]);
 
   const handleClear = () => {
-    onClear()
+    setInputValue("")
     clearSuggestions()
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const totalItems = suggestions.length + symnonyms.length;
+    const totalItems = suggestions.length + synonyms.length;
+
     if (e.key === "Enter") {
       if (activeSuggestionIndex >= 0) {
         if (activeSuggestionIndex < suggestions.length) {
           selectSuggestion(suggestions[activeSuggestionIndex]);
         } else {
           const relatedIndex = activeSuggestionIndex - suggestions.length;
-          selectSuggestion(symnonyms[relatedIndex]);
+          selectSuggestion(synonyms[relatedIndex]);
         }
+        clearSuggestions()
       } else {
         handleSubmit();
       }
@@ -58,7 +60,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClear }) => {
   };
 
   const handleInputChange = (input: string) => {
-    if (input.length > MAX_INPUT_LEN) {
+    if (input?.length > MAX_INPUT_LEN) {
       setError("Input is too long")
       return;
     }
@@ -68,7 +70,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClear }) => {
 
     const sanitizedInput = sanitizeInput(input)
     setInputValue(sanitizedInput)
-    if (sanitizedInput.length > 2) {
+    setActiveSuggestionIndex(-1)
+    if (sanitizedInput?.length > 2) {
       setIsDropdownOpen(true)
       fetchDebouncedSuggestions(sanitizedInput)
     }
@@ -85,10 +88,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClear }) => {
 
   const handleSubmit = (keyword?: string) => {
     const searchValue = keyword ?? inputValue
-    if (!searchValue) return;
+    if (!searchValue.trim()) return;
 
-    clearSuggestions()
     onSearch(searchValue)
+    setIsDropdownOpen(false)
+    clearSuggestions()
   }
   return (
     <div className='searchbar-wrapper'>
@@ -105,7 +109,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClear }) => {
         {error && <div className='error'>{error}</div>}
 
         {
-          inputValue.length > 0 && (
+          inputValue?.length > 0 && (
             <button className='searchbar-clear' aria-label='clear-search' onClick={handleClear}>
               <CrossIcon />
             </button>
@@ -113,11 +117,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClear }) => {
         }
 
         {isDropdownOpen &&
-          (suggestions.length > 0 ||
-            symnonyms.length > 0) && (
+          (suggestions?.length > 0 ||
+            synonyms?.length > 0) && (
             <DropdownSuggestion
               suggestions={suggestions}
-              symnonyms={symnonyms}
+              synonyms={synonyms}
               highlightIndex={activeSuggestionIndex}
               keyword={inputValue}
               onSelect={selectSuggestion}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { extractHighlightByKeyword, ITextFormat } from "../../utils/highlight/highlight-text";
+import { extractHighlightByKeyword, ITextFormat } from "@/utils/highlight/highlight-text";
 import './index.css'
 interface DropdownSuggestionProps {
   keyword: string;
@@ -8,7 +8,7 @@ interface DropdownSuggestionProps {
   onSelect: (value: string) => void;
   onHover: (index: number) => void;
   onCloseSuggestion: () => void;
-  symnonyms: string[];
+  synonyms: string[];
   maxItems?: number;
 }
 
@@ -22,7 +22,7 @@ function HighlightText(props: IProps) {
   return (
     <>
       {textFormats.map(({ text, type }, index) => (
-        <span key={index} className={type === "bold" ? "font-bold" : ""}>
+        <span key={index} style={{fontWeight: type === "bold" ? 700: "normal"}}>
           {text}
         </span>
       ))}
@@ -37,7 +37,7 @@ const DropdownSuggestion: React.FC<DropdownSuggestionProps> = ({
   onSelect,
   onHover,
   onCloseSuggestion,
-  symnonyms = [],
+  synonyms = [],
 }) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
@@ -78,22 +78,22 @@ const DropdownSuggestion: React.FC<DropdownSuggestionProps> = ({
         }
       </ul>
 
-      {symnonyms.length > 0 && (
-        <div className="symnonym-wrapper">
-          <h3 className="symnonym-header">Other Results</h3>
+      {synonyms.length > 0 && (
+        <div className="synonym-wrapper">
+          <h3 className="synonym-header">Other Results</h3>
           <ul>
-            {symnonyms.map((symnonym, index) => {
+            {synonyms.map((synonym, index) => {
               const synonymIndex = suggestions.length + index;
 
               return (
                 <li
-                  key={symnonym}
-                  className={`symnonym-item ${highlightIndex === synonymIndex ? "selected-item" : ""
+                  key={synonym}
+                  className={`synonym-item ${highlightIndex === synonymIndex ? "selected-item" : ""
                     }`}
                   onMouseEnter={() => onHover(synonymIndex)}
-                  onClick={() => onSelect(symnonym)}
+                  onClick={() => onSelect(synonym)}
                 >
-                  {symnonym}
+                  {synonym}
                 </li>
               );
             })}

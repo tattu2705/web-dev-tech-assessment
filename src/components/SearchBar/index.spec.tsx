@@ -1,11 +1,10 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import SearchBar from './index';
 
 jest.mock('../../hooks/useSuggestions', () => ({
   useSuggestions: () => ({
     suggestions: ['child care', 'child support'],
-    symnonyms: ['baby', 'infant'],
+    synonyms: ['baby', 'infant'],
     clearSuggestions: jest.fn(),
     fetchDebouncedSuggestions: jest.fn(),
   }),
@@ -13,32 +12,19 @@ jest.mock('../../hooks/useSuggestions', () => ({
 
 describe('SearchBar', () => {
   const onSearch = jest.fn();
-  const onClear = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('renders search input', () => {
-    render(<SearchBar onSearch={onSearch} onClear={onClear} />);
+    render(<SearchBar onSearch={onSearch} />);
 
     expect(screen.getByRole('textbox')).toBeInTheDocument();
   });
 
-  it('shows clear button and clears input on click', () => {
-    render(<SearchBar onSearch={onSearch} onClear={onClear} />);
-
-    fireEvent.change(screen.getByRole('textbox'), {
-      target: { value: 'child' },
-    });
-
-    fireEvent.click(screen.getByLabelText('clear-search'));
-
-    expect(onClear).toHaveBeenCalled();
-  });
-
   it('calls onSearch when pressing Enter with no active suggestion', () => {
-    render(<SearchBar onSearch={onSearch} onClear={onClear} />);
+    render(<SearchBar onSearch={onSearch}/>);
 
     fireEvent.change(screen.getByRole('textbox'), {
       target: { value: 'child' },
@@ -53,7 +39,7 @@ describe('SearchBar', () => {
   });
 
   it('selects suggestion using keyboard and triggers onSearch', () => {
-    render(<SearchBar onSearch={onSearch} onClear={onClear} />);
+    render(<SearchBar onSearch={onSearch} />);
 
     const input = screen.getByRole('textbox');
 
@@ -69,7 +55,7 @@ describe('SearchBar', () => {
   });
 
   it('renders DropdownSuggestion when dropdown is open and has data', () => {
-    render(<SearchBar onSearch={onSearch} onClear={onClear} />);
+    render(<SearchBar onSearch={onSearch} />);
 
     fireEvent.focus(screen.getByRole('textbox'));
 

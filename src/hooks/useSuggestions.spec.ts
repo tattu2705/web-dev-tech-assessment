@@ -4,7 +4,7 @@ import { fetchSuggestions } from '../services/suggestion-service';
 import { notifyError } from '../utils/notify';
 import {
   filterSearchSuggestions,
-  getOtherResultsFromSymnonyms,
+  getOtherResultsFromSynonyms,
 } from '../utils/filter/filter';
 
 jest.useFakeTimers();
@@ -16,7 +16,7 @@ jest.mock('../utils/filter/filter');
 const mockedFetchSuggestions = fetchSuggestions as jest.Mock;
 const mockedNotifyError = notifyError as jest.Mock;
 const mockedFilterSuggestions = filterSearchSuggestions as jest.Mock;
-const mockedGetOtherResults = getOtherResultsFromSymnonyms as jest.Mock;
+const mockedGetOtherResults = getOtherResultsFromSynonyms as jest.Mock;
 
 describe('useSuggestions', () => {
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe('useSuggestions', () => {
     const { result } = renderHook(() => useSuggestions());
 
     expect(result.current.suggestions).toEqual([]);
-    expect(result.current.symnonyms).toEqual([]);
+    expect(result.current.synonyms).toEqual([]);
   });
 
   it('should clear suggestions if keyword length < 3', () => {
@@ -38,7 +38,7 @@ describe('useSuggestions', () => {
     });
 
     expect(result.current.suggestions).toEqual([]);
-    expect(result.current.symnonyms).toEqual([]);
+    expect(result.current.synonyms).toEqual([]);
     expect(mockedFetchSuggestions).not.toHaveBeenCalled();
   });
 
@@ -58,7 +58,6 @@ describe('useSuggestions', () => {
       result.current.fetchDebouncedSuggestions('child');
     });
 
-    // Chưa đủ debounce time → chưa gọi API
     expect(mockedFetchSuggestions).not.toHaveBeenCalled();
 
     // Fast-forward time
@@ -68,7 +67,7 @@ describe('useSuggestions', () => {
 
     expect(mockedFetchSuggestions).toHaveBeenCalledWith('child');
     expect(result.current.suggestions).toEqual(['child care']);
-    expect(result.current.symnonyms).toEqual(['kids care']);
+    expect(result.current.synonyms).toEqual(['kids care']);
   });
 
   it('should debounce multiple calls and only fetch once', async () => {

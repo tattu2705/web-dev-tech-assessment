@@ -1,19 +1,19 @@
 import { useState, useRef, useCallback } from "react";
-import { fetchSuggestions } from "../services/suggestion-service";
-import { notifyError } from "../utils/notify";
-import { filterSearchSuggestions, getOtherResultsFromSymnonyms } from "../utils/filter/filter";
+import { fetchSuggestions } from "@/services/suggestion-service";
+import { notifyError } from "@/utils/notify";
+import { filterSearchSuggestions, getOtherResultsFromSynonyms } from "@/utils/filter/filter";
 
 const DEBOUNCE_DELAY = 300;
 
 export const useSuggestions = () => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [symnonyms, setSymnonyms] = useState<string[]>([]);
+  const [synonyms, setSynonyms] = useState<string[]>([]);
 
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   const clearSuggestions = () => {
     setSuggestions([]);
-    setSymnonyms([]);
+    setSynonyms([]);
   };
 
   const fetchDebouncedSuggestions = useCallback((keyword: string) => {
@@ -35,13 +35,13 @@ export const useSuggestions = () => {
           keyword
         );
 
-        const otherResults = getOtherResultsFromSymnonyms(
+        const otherResults = getOtherResultsFromSynonyms(
           res.synonyms,
           keyword
         );
 
         setSuggestions(filteredSuggestions);
-        setSymnonyms(otherResults);
+        setSynonyms(otherResults);
       } catch (err) {
         notifyError("Error", "Failed to fetch suggestions");
       }
@@ -50,7 +50,7 @@ export const useSuggestions = () => {
 
   return {
     suggestions,
-    symnonyms,
+    synonyms,
     fetchDebouncedSuggestions,
     clearSuggestions,
   };

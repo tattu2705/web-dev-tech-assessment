@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SuggestionsResponse } from '../types/promise-type';
+import { SuggestionsResponse } from '@/types/promise-type';
 
 // URL API
 const SUGGESTION_API_URL =
