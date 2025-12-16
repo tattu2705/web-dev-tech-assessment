@@ -50,7 +50,6 @@ export const filterSearchResult = (
   const words = keyword
     .toLowerCase()
     .split(/\s+/)
-    .filter(word => word.length > 3);
 
   if (words.length === 0) return data;
 
